@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Remember (v1)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Remember</h1>
+          <div class="sub">Grow capacities → set objectives → track daily → records → rewards → reminders</div>
+        </div>
+      </div>
+      <div class="split">
+        <span id="todayPill" class="pill"></span>
+        <button class="btn" id="btnEnableNotifs">Enable notifications</button>
+        <button class="btn danger" id="btnReset">Reset data</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT: Capacities + Records -->
+      <section class="card">
+        <div class="hd">
+          <h2>Capacities</h2>
+          <button class="btn primary" id="btnQuickAddCapacity">+ Add</button>
+        </div>
+        <div class="bd">
+          <div class="muted">A capacity is what you want to grow (e.g., Strength, Focus, Spanish).</div>
+          <div class="hr"></div>
+
+          <div class="list" id="capacityList"></div>
+
+          <div class="hr"></div>
+          <div class="muted"><b>Best current record</b> (per capacity): edit anytime (e.g., “5K in 24:10”, “Meditate 30 min”).</div>
+          <div class="hr"></div>
+
+          <div id="recordEditor" class="list"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Objectives + Today -->
+      <section class="card">
+        <div class="hd">
+          <h2 id="rightTitle">Objectives</h2>
+          <div class="split">
+            <select id="capacitySelect"></select>
+            <button class="btn good" id="btnAddObjective">+ Objective</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div id="objectiveComposer" style="display:none">
+            <div class="formGrid">
+              <div>
+                <label>Objective name</label>
+                <input id="objName" placeholder="e.g., Deep work, Run, Vocabulary" />
+              </div>
+              <div>
+                <label>Measure</label>
+                <select id="objMeasure">
+                  <option value="minutes">Minutes</option>
+                  <option value="count">Count</option>
+                  <option value="boolean">Done / Not done</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="formGrid3" style="margin-top:12px">
+              <div>
+                <label>Start date</label>
+                <input id="objStart" type="date" />
+              </div>
+              <div>
+                <label>End date</label>
+                <input id="objEnd" type="date" />
+              </div>
+              <div>
+                <label>Daily reminder time</label>
+                <input id="objTime" type="time" value="09:00" />
+              </div>
+            </div>
+
+            <div class="formGrid" style="margin-top:12px">
+              <div>
+                <label>Daily target</label>
+                <input id="objTarget" type="number" min="0" step="1" value="30" />
+                <div class="tiny">Ignored for “Done / Not done”.</div>
+              </div>
+              <div>
+                <label>Completion reward</label>
+                <input id="objReward" placeholder="e.g., Sushi dinner, New book, Movie night" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label>Notes</label>
+              <textarea id="objNotes" placeholder="Optional: how you’ll do it, constraints, definition of done…"></textarea>
+            </div>
+
+            <div class="split" style="margin-top:12px; justify-content:flex-end">
+              <button class="btn" id="btnCancelObjective">Cancel</button>
+              <button class="btn good" id="btnSaveObjective">Save objective</button>
+            </div>
+
+            <div class="hr"></div>
+          </div>
+
+          <div class="row" style="justify-content:space-between; align-items:flex-end">
+            <div>
+              <div style="font-weight:800">Today</div>
+              <div class="muted">Log your progress for the objectives that are active today.</div>
+            </div>
+            <div class="tiny">Tip: press <span class="kbd">Ctrl</span> + <span class="kbd">S</span> won’t save here — it’s auto-saved.</div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="list" id="todayList"></div>
+
+          <div class="hr"></div>
+
+          <div style="font-weight:800">All objectives for this capacity</div>
+          <div class="muted">Includes future and past objectives; active ones show progress.</div>
+
+          <div class="hr"></div>
+
+          <div class="list" id="objectiveList"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- Reminder toast -->
+<div class="toast" id="toast">
+  <div class="left">
+    <div class="t" id="toastTitle">Reminder</div>
+    <div class="d" id="toastDesc"></div>
+  </div>
+  <div class="right">
+    <button class="btn good" id="toastMarkDone">Mark done</button>
+    <button class="btn" id="toastSnooze">Snooze 10m</button>
+    <button class="btn danger" id="toastDismiss">Dismiss</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
